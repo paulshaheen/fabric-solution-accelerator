@@ -9,10 +9,20 @@ This repository contains a **deployable Microsoft Fabric solution** using **Fabr
 - SEMPy available in Fabric notebooks
 
 ## Deployment (DEV)
-1. Download the fabric_launcher_sempy_sample notebook from this repo (root)
-2. import the notebook into any Fabric workspace of your choice
-3. Update environment variables or paths as needed
-4. Run all cells to deploy Fabric items
+1. Create a new Workspace in Fabric that you intend to use for Admin activities.  Ensure it is assigned to a Fabric Capacity.
+2. Click Workspace settings (top right) then Git integration from the menu on the left.
+3. Select GitHub
+4. Click Add account and provide a name for the git connection
+5. Paste the Personal access token - UPDATE THIS
+6. Paste the repository URL - https://github.com/paulshaheen/fabric-solution-accelerator
+7. Click Connect
+8. Select Main from branch (note you may have to scroll down to see it)
+9. Type "admin" (no quotes) in the Git folder text box (leave blank if you want all the artifacts synced to your workspace and not just the admin utils)
+10. Go back to workspace settings -> GIT Integration -> Disconnect workspace
+
+## Usage
+1. fabric_launcher_sempy_sample provisions new workspaces with specific defaults
+2. OneLake_Logging_Setup parses raw data from other workspaces for centralized diagnostics in the workspace you provisioned.
 
 ## Post‑Deployment Validation
 Script at bottom of install notebook confirms everything binds properly
