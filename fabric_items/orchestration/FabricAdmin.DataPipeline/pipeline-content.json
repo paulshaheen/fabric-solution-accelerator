@@ -1,0 +1,95 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "bdb056c9-4888-b1d8-4337-05297e280654",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "workspace_name": {
+              "value": {
+                "value": "@pipeline().parameters.workspace_name",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "varRepo": {
+              "value": {
+                "value": "@pipeline().parameters.varRepo",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "varRepoName": {
+              "value": {
+                "value": "@pipeline().parameters.varRepoName",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "varBranch": {
+              "value": {
+                "value": "@pipeline().parameters.varBranch",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "varAdminID": {
+              "value": {
+                "value": "@pipeline().parameters.varAdminID",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "varFolder": {
+              "value": {
+                "value": "@pipeline().parameters.varFolder",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "externalReferences": {
+          "connection": "496b15ed-3c3f-4d58-be93-c40363404d0d"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "FabricActivity",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "workspace_name": {
+        "type": "string",
+        "defaultValue": "demoworkspace1"
+      },
+      "varRepo": {
+        "type": "string",
+        "defaultValue": "paulshaheen"
+      },
+      "varRepoName": {
+        "type": "string",
+        "defaultValue": "fabric-solution-accelerator"
+      },
+      "varBranch": {
+        "type": "string",
+        "defaultValue": "main"
+      },
+      "varAdminID": {
+        "type": "string",
+        "defaultValue": "895e0a62-489f-444a-9b36-322fb8a7f795"
+      },
+      "varFolder": {
+        "type": "string",
+        "defaultValue": "fabric_items"
+      }
+    }
+  }
+}

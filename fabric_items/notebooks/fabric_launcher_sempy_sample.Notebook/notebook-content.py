@@ -15,6 +15,8 @@
 # 
 # This notebook is a **starting point** for deploying a Fabric solution from a repo (via **Fabric Launcher**) and then validating / interacting with a semantic model using **SEMPy**.
 # 
+# **Review the readme before starting**
+# 
 # **What you’ll do:**
 # 1. Install/Import libraries
 # 2. Set your workspace + repo parameters
@@ -44,16 +46,24 @@ notebookutils.session.restartPython()
 # META   "language_group": "jupyter_python"
 # META }
 
-# MARKDOWN ********************
-
-# ## SET VARIABLES
-
 # CELL ********************
 
 import sys, platform, os
 print('Python:', sys.version)
 print('Platform:', platform.platform())
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# MARKDOWN ********************
+
+# ## SET VARIABLES
+
+# PARAMETERS CELL ********************
 
 workspace_name = "demoworkspace" #what you want the new workspace that is created to be names
 varRepo="paulshaheen" #the repo owner in GIT you want to use
