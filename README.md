@@ -3,7 +3,7 @@
 This repository contains a **deployable Microsoft Fabric solution** using **Fabric Launcher** and **SEMPy**.
 
 ## Prerequisites
--A Sercvice Principal (App Registration)
+- A Sercvice Principal (App Registration) with at least contributor access to the fabric capacity wehere being provisioned. 
 - Microsoft Fabric workspace access (Contributor or higher)
 - Fabric Launcher library available in your tenant
 - SEMPy available in Fabric notebooks
