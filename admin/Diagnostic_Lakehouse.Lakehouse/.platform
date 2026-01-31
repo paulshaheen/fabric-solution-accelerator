@@ -1,11 +1,11 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "DataPipeline",
-    "displayName": "FabricAdmin"
+    "type": "Lakehouse",
+    "displayName": "Diagnostic_Lakehouse"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "74d0bce8-4a43-b915-407e-8cec3d044694"
+    "logicalId": "3cfc020d-5db1-ae1c-4fc4-7c562e757f60"
   }
 }

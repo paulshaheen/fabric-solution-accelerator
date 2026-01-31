@@ -34,7 +34,7 @@
 # CELL ********************
 
 %pip install semantic-link -q
-#%pip install -U sempy -q
+#%pip install -U sempy -q #this is already installed by default on fabric compute
 %pip install -U fabric-launcher -q
 
 notebookutils.session.restartPython()
@@ -65,13 +65,13 @@ print('Platform:', platform.platform())
 
 # PARAMETERS CELL ********************
 
-workspace_name = "demoworkspace" #what you want the new workspace that is created to be names
+workspace_name = "demoworkspace12" #what you want the new workspace that is created to be names
 varRepo="paulshaheen" #the repo owner in GIT you want to use
 varRepoName="fabric-solution-accelerator" #the specific repo in GIT
 varBranch="main"
 varAdminID = "895e0a62-489f-444a-9b36-322fb8a7f795"
 varFolder ="fabric_items" #the folder in the repo that contains your fabric artifacts to be deployed
-
+capacityID = "1db1d7e7-c9d2-4876-ab5c-2681738e0d88" #the capacity to assign the workspace to.  use the cell 2 down from here to list capacities if you do not know the id
 
 # METADATA ********************
 
@@ -118,7 +118,6 @@ except Exception as e:
 
 # CELL ********************
 
-
 capacities = fabric.list_capacities()
 capacities
 
@@ -136,10 +135,6 @@ capacities
 
 # CELL ********************
 
-
-
-capacityID = "1db1d7e7-c9d2-4876-ab5c-2681738e0d88"
-
 client = fabric.FabricRestClient()
 
 payload = {
@@ -155,6 +150,59 @@ print(resp.status_code)
 print(resp.json())
 new_workspace_id = resp.json().get("id")
 print("New WORKSPACE_ID:", new_workspace_id)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# MARKDOWN ********************
+
+# ## Apply network policy to new workspace
+
+# CELL ********************
+
+def networkUpdate(workspace_id: str,outbound:str,inbound:str):
+
+
+    """
+    proper values are either Allow or Deny
+    Safe even when ETag is not returned by GET.
+    """
+
+    client = fabric.FabricRestClient()
+
+    path = f"v1/workspaces/{workspace_id}/networking/communicationPolicy"
+
+    # 1️⃣ Get existing policy (may NOT return ETag)
+    r = client.get(path)
+    r.raise_for_status()
+    policy = r.json()
+
+    # 2️⃣ Ensure required structure exists
+    policy.setdefault("inbound", {}).setdefault(
+        "publicAccessRules", {}
+    ).setdefault("defaultAction", inbound)
+
+    policy.setdefault("outbound", {}).setdefault(
+        "publicAccessRules", {}
+    )["defaultAction"] = outbound
+
+    # 3️⃣ PUT without If-Match (allowed)
+    r2 = client.put(path, json=policy)
+    r2.raise_for_status()
+
+    return {
+        "workspaceId": workspace_id,
+        "status": f"Outbound public access set to {outbound}.  Inbound Access set to {inbound}",
+        "appliedPolicy": policy
+    }
+
+
+result = networkUpdate(new_workspace_id,"Allow","Allow") #Allow outbound and allow inbound.  API does not support private end points yet
+result
 
 # METADATA ********************
 
@@ -204,6 +252,7 @@ launcher.download_and_deploy(
 # MARKDOWN ********************
 
 # ## Add the SP and User specified as admin to the newly provisioned workspace
+# Note that only an ADMIN ID is being added.  This will need to be updated in the future when a service principal is used
 
 # CELL ********************
 
@@ -262,32 +311,6 @@ df = fabric.evaluate_dax(
 )
 
 display(df)
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
-# CELL ********************
-
-
-payload = {
-    "principal": {
-        "id": varAdminID,  # Entra Object ID
-        "type": "User"  # User | Group | ServicePrincipal
-    },
-    "role": "Admin"
-}
-
-client.post(
-    f"/v1/workspaces/{new_workspace_id}/roleAssignments",
-    json=payload
-).raise_for_status()
-
-print("✅ User added to workspace")
-
 
 # METADATA ********************
 
