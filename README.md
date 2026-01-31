@@ -3,21 +3,10 @@
 This repository contains a **deployable Microsoft Fabric solution** using **Fabric Launcher** and **SEMPy**.
 
 ## Prerequisites
+-A Sercvice Principal (App Registration)
 - Microsoft Fabric workspace access (Contributor or higher)
 - Fabric Launcher library available in your tenant
 - SEMPy available in Fabric notebooks
-
-## Repository Structure
-```
-parameters/
-  parameters.dev.yml
-installer/
-  install_solution.ipynb
-  post_deploy_validation.ipynb
-fabric_items/
-  semantic_models/
-  notebooks/
-```
 
 ## Deployment (DEV)
 1. Open **installer/install_solution.ipynb** in a Fabric notebook
