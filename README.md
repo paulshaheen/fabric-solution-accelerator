@@ -39,4 +39,4 @@ This validates:
 - Add `parameters.test.yml`, `parameters.prod.yml` as needed
 
 ## Data Access
-This solution has **DataAccessRoles** enabled in the Lakehouse configuration, allowing public access through role-based security. Data access roles can be configured to control permissions for different users and groups accessing the Lakehouse data.
+This solution has **DataAccessRoles** enabled in the Lakehouse configuration, enabling controlled access through role-based security. Data access roles can be configured to define permissions for different users and groups accessing the Lakehouse data.
