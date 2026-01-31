@@ -1,0 +1,75 @@
+table accounts
+	lineageTag: 39a43f91-687d-4474-833d-5c323c939554
+	sourceLineageTag: [dbo].[accounts]
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: d7f13f9e-b506-4864-92a0-b6b62040720f
+		sourceLineageTag: id
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 95a56245-f6fb-4365-a3f0-41a3ba8b9756
+		sourceLineageTag: Category
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company_Name
+		dataType: string
+		lineageTag: 66df9eee-5493-4947-b9a9-6cd42e1da535
+		sourceLineageTag: Company_Name
+		summarizeBy: none
+		sourceColumn: Company_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Headquarters
+		dataType: string
+		lineageTag: 7bcaddcb-8f80-43a4-96ff-80b8c6d9c57b
+		sourceLineageTag: Headquarters
+		summarizeBy: none
+		sourceColumn: Headquarters
+
+		annotation SummarizationSetBy = Automatic
+
+	column Primary_Segment
+		dataType: string
+		lineageTag: 08f3b5a9-90ac-48f6-841f-f912a73c458b
+		sourceLineageTag: Primary_Segment
+		summarizeBy: none
+		sourceColumn: Primary_Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estimated_Revenue_USD
+		dataType: string
+		lineageTag: 45c28c69-2422-4476-8c50-31944abef78c
+		sourceLineageTag: Estimated_Revenue_USD
+		summarizeBy: none
+		sourceColumn: Estimated_Revenue_USD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Production_Capacity
+		dataType: string
+		lineageTag: a81e5742-c1a9-423c-a015-92987af62a86
+		sourceLineageTag: Production_Capacity
+		summarizeBy: none
+		sourceColumn: Production_Capacity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition accounts = entity
+		mode: directLake
+		source
+			entityName: accounts
+			schemaName: dbo
+			expressionSource: 'DirectLake - Lakehouse'
+
