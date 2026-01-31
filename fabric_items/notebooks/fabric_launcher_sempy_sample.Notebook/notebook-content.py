@@ -1,5 +1,13 @@
 # Fabric notebook source
 
+# METADATA ********************
+
+# META {
+# META   "kernel_info": {
+# META     "name": "jupyter",
+# META     "jupyter_kernel_name": "python3.11"
+# META   }
+# META }
 
 # MARKDOWN ********************
 
@@ -18,9 +26,27 @@
 
 # MARKDOWN ********************
 
-# ## 0) Environment
-# Intended to run **inside a Microsoft Fabric notebook** (or Python notebook experience).
+# ## Install Libs
 
+
+# CELL ********************
+
+%pip install semantic-link -q
+#%pip install -U sempy -q
+%pip install -U fabric-launcher -q
+
+notebookutils.session.restartPython()
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# MARKDOWN ********************
+
+# ## SET VARIABLES
 
 # CELL ********************
 
@@ -29,30 +55,32 @@ print('Python:', sys.version)
 print('Platform:', platform.platform())
 
 
+workspace_name = "demoworkspace" #what you want the new workspace that is created to be names
+varRepo="paulshaheen" #the repo owner in GIT you want to use
+varRepoName="fabric-solution-accelerator" #the specific repo in GIT
+varBranch="main"
+varAdminID = "895e0a62-489f-444a-9b36-322fb8a7f795"
+varFolder ="fabric_items" #the folder in the repo that contains your fabric artifacts to be deployed
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
 # MARKDOWN ********************
 
-# ## 1) Install dependencies (if needed)
-# If your workspace already has the packages, you can skip this cell.
-
-
-# CELL ********************
-
-# In Fabric notebooks, %pip is supported
-# Uncomment as needed
-# %pip install -U sempy
-# %pip install -U fabric-launcher
-
-
-# MARKDOWN ********************
-
-# ## 2) Imports
-# These imports are defensive—adjust based on the exact module names you have.
-
+# ## Confirm Successful Lib installs
 
 # CELL ********************
 
 # --- SEMPy ---
 import sempy
+import notebookutils
+import sempy.fabric as fabric
+from fabric_launcher import FabricLauncher
 
 try:
     from sempy.fabric import FabricRestClient
@@ -67,113 +95,172 @@ except Exception as e:
     FabricLauncher = None
     print('FabricLauncher import not available (adjust import/package name):', e)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
 
 # MARKDOWN ********************
 
-# ## 3) Configure your deployment inputs
-# Fill these in for your workspace + repo.
-# - `WORKSPACE_ID`: target Fabric workspace GUID
-# - `REPO_URL`: GitHub/Azure DevOps repo containing the solution
-# - `SOLUTION_PATH`: folder in repo that contains Fabric items + config
-# - `PARAMETERS_YAML`: path to a YAML file with mapping/replacement rules
-
+# ## List Capacities and assign the ID to the subsequent cell
 
 # CELL ********************
 
-WORKSPACE_ID = os.getenv('FABRIC_WORKSPACE_ID', '<your-workspace-guid>')
-REPO_URL      = os.getenv('FABRIC_SOLUTION_REPO', '<your-repo-url>')
-SOLUTION_PATH = os.getenv('FABRIC_SOLUTION_PATH', '<repo-subfolder-or-root>')
-PARAMETERS_YAML = os.getenv('FABRIC_PARAMETERS_YAML', 'parameters.yml')
 
-print('WORKSPACE_ID:', WORKSPACE_ID)
-print('REPO_URL:', REPO_URL)
-print('SOLUTION_PATH:', SOLUTION_PATH)
-print('PARAMETERS_YAML:', PARAMETERS_YAML)
+capacities = fabric.list_capacities()
+capacities
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
 
 # MARKDOWN ********************
 
-# ## 4) (Optional) Deploy solution using Fabric Launcher
-# This section assumes you have a deployable solution folder and a YAML parameter file as described in the Fabric Launcher session.
-# If the `FabricLauncher` class name or constructor differs in your build, update accordingly.
-
+# ## Create the new empty workspace DO NOT FORGET TO UPDATE CAPACITY ID
+# If you already have an empty workspace skip this and set the ID
 
 # CELL ********************
 
-if FabricLauncher is None:
-    print('FabricLauncher not available. Install/adjust the package and import.')
-else:
-    # Example pattern – adjust to match your library
-    launcher = FabricLauncher(
-        workspace_id=WORKSPACE_ID,
-        repo_url=REPO_URL,
-        solution_path=SOLUTION_PATH,
-        parameters_file=PARAMETERS_YAML
-    )
-    print('Launcher initialized:', launcher)
 
-    # Preview items (optional)
-    try:
-        items = launcher.preview_items()
-        print('Items discovered:', items)
-    except Exception as e:
-        print('preview_items() failed (API may differ):', e)
 
-    # Deploy (optional)
-    # try:
-    #     result = launcher.deploy()
-    #     print('Deploy result:', result)
-    # except Exception as e:
-    #     print('deploy() failed (API may differ):', e)
+capacityID = "1db1d7e7-c9d2-4876-ab5c-2681738e0d88"
 
+client = fabric.FabricRestClient()
+
+payload = {
+    "displayName": workspace_name,
+    # Optional if you want to assign it immediately:
+    "capacityId": capacityID
+}
+
+# Create Workspace is POST /v1/workspaces
+resp = client.post("/v1/workspaces", json=payload, lro_wait=True)
+
+print(resp.status_code)
+print(resp.json())
+new_workspace_id = resp.json().get("id")
+print("New WORKSPACE_ID:", new_workspace_id)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
 
 # MARKDOWN ********************
 
-# ## 5) Use SEMPy to list semantic models and run a basic query
-# SEMPy provides a convenient way to work with Power BI / Fabric semantic models from notebooks.
-# Below are *example* patterns—adjust for your version of SEMPy.
-
+# ## Deploy the workspace to Fabric
 
 # CELL ********************
 
-# Example: list semantic models using Fabric REST client (if available)
-if FabricRestClient is None:
-    print('FabricRestClient not available; use your SEMPy version equivalents.')
-else:
-    client = FabricRestClient()
-    try:
-        models = client.list_semantic_models(workspace_id=WORKSPACE_ID)
-        print('Semantic models:', models)
-    except Exception as e:
-        print('Listing semantic models failed (API may differ):', e)
 
 
-# CELL ********************
+# If you want to explicitly target a different workspace than the notebook's workspace:
+TARGET_WORKSPACE_ID = new_workspace_id  # or "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
-# Example: run a DAX query (update to match your SEMPy functions)
-DAX_QUERY = '''
-EVALUATE
-SUMMARIZECOLUMNS(
-    'Date'[Year],
-    "Total Sales", SUM('Sales'[Sales Amount])
+launcher = FabricLauncher(
+    notebookutils=notebookutils,
+    workspace_id=TARGET_WORKSPACE_ID,      # None => auto-detect current workspace
+    #environment="DEV",                     # DEV / TEST / PROD
+    debug=True,
+    allow_non_empty_workspace=False,         # set False to prevent accidental overwrite
+    fix_zero_logical_ids=True,
+    #config_file="Files/config/deployment_config.yaml"  # local path
 )
-'''
 
-# Replace with a real semantic model id/name from the listing above
-SEMANTIC_MODEL_ID = '<semantic-model-id>'
+# Deploy using config
 
-try:
-    # Placeholder: update to sempy's actual query function in your environment
-    from sempy.fabric import execute_dax
-    df = execute_dax(workspace_id=WORKSPACE_ID, semantic_model_id=SEMANTIC_MODEL_ID, dax_query=DAX_QUERY)
-    display(df.head())
-except Exception as e:
-    print('DAX execution failed (function/API may differ):', e)
+launcher.download_and_deploy(
+    repo_owner= varRepo,
+    repo_name=varRepoName,
+    branch=varBranch,
+    workspace_folder=varFolder
+)
 
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
 
 # MARKDOWN ********************
 
-# ## 6) Next steps
+# ## Use Fabric Rest Client to refresh the semantic models
+# Required to bind data to newly created semantic model
+
+# CELL ********************
+
+resp = client.get(f"/v1/workspaces/{new_workspace_id}/semanticModels")
+resp.raise_for_status()
+
+semantic_models = resp.json()["value"]
+
+for m in semantic_models:
+    print(f"{m['displayName']}  |  id={m['id']}  |  Refreshing")
+    fabric.refresh_dataset(workspace=workspace_name, dataset=m['displayName'])
+dataset_name=m['displayName']
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+
+df = fabric.evaluate_dax(
+    dataset=dataset_name,
+    dax_string="EVALUATE TOPN(5, 'accounts')"
+)
+
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+
+payload = {
+    "principal": {
+        "id": varAdminID,  # Entra Object ID
+        "type": "User"  # User | Group | ServicePrincipal
+    },
+    "role": "Admin"
+}
+
+client.post(
+    f"/v1/workspaces/{new_workspace_id}/roleAssignments",
+    json=payload
+).raise_for_status()
+
+print("✅ User added to workspace")
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# MARKDOWN ********************
+
+# Next steps
 # - Add your `parameters.yml` mapping file
 # - Add post-deployment steps (seed data load, refreshes, parameter updates)
 # - Package this notebook + solution folder as a shareable accelerator
