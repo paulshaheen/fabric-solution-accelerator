@@ -203,6 +203,34 @@ launcher.download_and_deploy(
 
 # MARKDOWN ********************
 
+# ## Add the SP and User specified as admin to the newly provisioned workspace
+
+# CELL ********************
+
+payload = {
+    "principal": {
+        "id": varAdminID,  # Entra Object ID
+        "type": "User"  # User | Group | ServicePrincipal
+    },
+    "role": "Admin"
+}
+
+client.post(
+    f"/v1/workspaces/{new_workspace_id}/roleAssignments",
+    json=payload
+).raise_for_status()
+
+print("✅ User added to workspace")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# MARKDOWN ********************
+
 # ## Use Fabric Rest Client to refresh the semantic models
 # Required to bind data to newly created semantic model
 
