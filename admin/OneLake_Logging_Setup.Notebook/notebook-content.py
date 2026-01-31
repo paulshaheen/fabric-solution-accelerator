@@ -35,7 +35,9 @@
 
 from notebookutils import fs
 from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
 from datetime import datetime
+
 
 spark = SparkSession.builder.getOrCreate()
 
@@ -215,9 +217,6 @@ print(f"\n🧾 Wrote schema stamp to {schema_stamp_path}")
 # Idempotent (checkpoint-based)
 # ------------------------------------------------------------
 
-from notebookutils import fs
-from datetime import datetime
-
 # -----------------------
 # CONFIGURATION
 # -----------------------
@@ -338,10 +337,6 @@ print(f"   Completed at : {datetime.utcnow().isoformat()}Z")
 #  - Stores RawJson for forward compatibility
 #  - Idempotent: safe to rerun
 # ============================================================
-
-from notebookutils import fs
-from pyspark.sql import functions as F
-from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.getOrCreate()
 
