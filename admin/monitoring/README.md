@@ -2,6 +2,8 @@
 
 **Solution accelerator for Fabric platform admin monitoring**
 
+# Helpul Notes from Paul:  When you are required to use a service principal, create one from scratch!  Do not use an existing one.  Additionally, ensure your API SP access is toggled on in tenant settings for fabric.  Create a new Entra AD Group and add the SP to that group and include the group under the API Tenant Settings.
+
 ![image](./media/general/fuam_cover.png)
 
 [Want to get a brief introduction on FUAM? - Watch the video](https://youtu.be/CmHMOsQcMGI)
@@ -120,3 +122,4 @@ The FUAM solution accelerator template **is not an official Microsoft service**.
 - [Overview - Semantic Link Labs](https://github.com/microsoft/semantic-link-labs/blob/main/README.md)
 
 ----------------
+
