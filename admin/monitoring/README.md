@@ -69,7 +69,7 @@ The data ingestion logic is orchestrated and parameterizable, which allows us to
 Are you ready to try FUAM out? We have prepared two step-by-step guides to help you deploy FUAM in your workspace on your tenant:
 
 
-#### [Click here to **deploy** FUAM](/admin/monitoring/How_to_deploy_FUAM.md)
+#### [Click here to **deploy** FUAM](https://github.com/microsoft/fabric-toolbox/blob/main/monitoring/fabric-unified-admin-monitoring/how-to/How_to_deploy_FUAM.md)
 
 
 
@@ -121,6 +121,7 @@ The FUAM solution accelerator template **is not an official Microsoft service**.
 - [Overview - Semantic Link Labs](https://github.com/microsoft/semantic-link-labs/blob/main/README.md)
 
 ----------------
+
 
 
 
