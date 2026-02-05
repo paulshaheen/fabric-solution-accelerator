@@ -2,10 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "Notebook",
-    "displayName": "OneLake_Logging_Setup"
+    "displayName": "2-explore-cleanse-data",
+    "description": "New notebook"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "4be2a9f0-30aa-9c77-4bed-372bf4f0e7d7"
+    "logicalId": "747cbb31-71b9-ae9a-4c45-19ff02f92ae8"
   }
 }

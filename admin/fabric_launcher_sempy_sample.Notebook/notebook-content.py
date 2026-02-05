@@ -65,7 +65,7 @@ print('Platform:', platform.platform())
 
 # PARAMETERS CELL ********************
 
-workspace_name = "UserWorkspace" #what you want the new workspace that is created to be names
+workspace_name = "SouthernWorkspace" #what you want the new workspace that is created to be names
 varRepo="paulshaheen" #the repo owner in GIT you want to use
 varRepoName="fabric-solution-accelerator" #the specific repo in GIT
 varBranch="main"
